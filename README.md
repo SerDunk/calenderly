@@ -3,8 +3,9 @@ Dynamic Event Calendar Application
 
 Calenderly is a modern, feature-rich event calendar application built with React.js and styled using shadcn components. It allows users to manage their events seamlessly with a clean and interactive interface.
 
-🚀 Live Demo
-Calenderly on Vercel
+🚀## Live Demo
+
+[Calenderly on Vercel](https://calenderly-blue.vercel.app/)
 
 📑 Features
 Core Features:
