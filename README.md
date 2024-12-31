@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Calenderly
+Dynamic Event Calendar Application
 
-## Getting Started
+Calenderly is a modern, feature-rich event calendar application built with React.js and styled using shadcn components. It allows users to manage their events seamlessly with a clean and interactive interface.
 
-First, run the development server:
+🚀 Live Demo
+Calenderly on Vercel
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+📑 Features
+Core Features:
+Calendar View:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Displays a grid-based calendar for the current month.
+Navigation to previous and next months using intuitive buttons.
+Event Management:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Add events by selecting a specific day.
+Edit or delete events for any selected day.
+Each event includes:
+Event name
+Start and end time
+Optional description
+Event List:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Lists all events for a selected day in a user-friendly modal.
+Data Persistence:
 
-## Learn More
+Events are stored in localStorage for continuity between page refreshes.
+Complex Logic:
+Prevents overlapping events.
+Handles seamless month transitions.
+Highlights the current day and the selected day.
+Bonus Features:
+Export events for a specific month in JSON or CSV format.
+📐 Tech Stack
+Framework: React.js
+UI Library: shadcn
+Data Persistence: localStorage
+Deployment Platform: Vercel
+💻 Getting Started
+Clone the Repository:
+bash
+Copy code
+git clone https://github.com/SerDunk/calenderly.git  
+cd calenderly  
+Install Dependencies:
+bash
+Copy code
+npm install  
+Run the Application Locally:
+bash
+Copy code
+npm run dev  
+Access the application at http://localhost:3000
 
-To learn more about Next.js, take a look at the following resources:
+📂 Project Structure
+components/: Contains reusable UI components like Calendar and Event Sidebar.
+utils/: Includes utility functions for event management and persistence.
+types/: Defines TypeScript types for events and other data structures.
+🎨 Improvements to Consider
+Given more time, the following improvements could be made:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Enhancing responsiveness for better mobile and tablet support.
+Adding advanced features like drag-and-drop event rescheduling.
+Implementing color coding for event categories.
+🤝 Contributing
+Contributions are welcome! Feel free to fork the repository and submit a pull request.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+📧 Contact
+For any queries or suggestions, feel free to reach out to me:
+Abhinav Kondapalli
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+GitHub Profile
