@@ -1,20 +1,16 @@
 import { Event } from "@/types/event";
 
-// Helper function to format the date as YYYY-MM-DD
 export const formatDate = (date: Date) => date.toISOString().split("T")[0];
 
-// Load events for a specific date from localStorage
 export const loadEvents = (date: Date): Event[] => {
   const storedEvents = localStorage.getItem(`events-${formatDate(date)}`);
   return storedEvents ? JSON.parse(storedEvents) : [];
 };
 
-// Save events for a specific date to localStorage
 export const saveEvents = (date: Date, events: Event[]) => {
   localStorage.setItem(`events-${formatDate(date)}`, JSON.stringify(events));
 };
 
-// Add a new event
 export const addEvent = (
   date: Date,
   events: Event[],
@@ -25,7 +21,6 @@ export const addEvent = (
   return updatedEvents;
 };
 
-// Delete an event
 export const deleteEvent = (
   date: Date,
   events: Event[],
@@ -36,7 +31,6 @@ export const deleteEvent = (
   return updatedEvents;
 };
 
-// Edit an event
 export const editEvent = (
   date: Date,
   events: Event[],
@@ -49,7 +43,6 @@ export const editEvent = (
   return updatedEvents;
 };
 
-// Export events for a specific month
 export const exportEvents = (
   month: number,
   year: number,
@@ -65,7 +58,6 @@ export const exportEvents = (
     return JSON.stringify(filteredEvents, null, 2);
   }
 
-  // Generate CSV
   const csvHeader = "ID,Name,Start Time,End Time,Description,Category\n";
   const csvRows = filteredEvents.map(
     (event) =>

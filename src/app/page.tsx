@@ -13,7 +13,7 @@ export default function HomePage() {
           <p>Dynamic UI Calender to keep track of events</p>
         </div>
         <div>
-          <Button asChild className="rounded">
+          <Button asChild className="rounded bg-white text-black">
             <Link href="/dashboard">Get Started</Link>
           </Button>
         </div>

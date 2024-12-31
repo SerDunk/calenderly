@@ -66,9 +66,9 @@ export default function EventForm({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg w-96 max-h-[80vh] overflow-y-auto shadow-lg">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="text-black">
           <div className="mb-4">
             <Label htmlFor="name">Event Name</Label>
             <Input
@@ -152,7 +152,7 @@ export default function EventForm({
             </Button>
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <div className="flex justify-end space-x-4 mt-2">
+          <div className="flex justify-end space-x-4 mt-2 text-black">
             <Button type="button" onClick={onClose} className="bg-gray-500">
               Cancel
             </Button>

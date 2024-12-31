@@ -37,54 +37,56 @@ const EventSidebar: FC<EventSidebarProps> = ({
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Event Management</h2>
-      <div className="space-y-2">
-        <Button onClick={() => openEventForm()} className="w-full">
-          Add Event
-        </Button>
+    <div className="flex flex-col h-full space-y-4 text-black">
+      <div className="flex-grow">
+        <h2 className="text-xl font-semibold mb-2">Event Management</h2>
+        <div className="space-y-2">
+          <Button onClick={() => openEventForm()} className="w-full">
+            Add Event
+          </Button>
 
-        <h3 className="text-lg font-semibold">
-          Events on {date?.toLocaleDateString()}
-        </h3>
-        <ul className="space-y-2">
-          {events.map((event) => (
-            <li
-              key={event.id}
-              className={`flex justify-between items-center ${
-                event.category === "work"
-                  ? "bg-green-100"
-                  : event.category === "personal"
-                  ? "bg-blue-100"
-                  : "bg-yellow-100"
-              } p-2 rounded`}
-            >
-              <div>
-                <p className="font-semibold">{event.name}</p>
-                <p className="text-sm text-gray-600">
-                  {event.startTime} - {event.endTime}
-                </p>
-              </div>
-              <div className="space-x-2">
-                <Button
-                  onClick={() => openEventForm(event)}
-                  className="bg-blue-500 text-white"
-                >
-                  Edit
-                </Button>
-                <Button
-                  onClick={() => handleDeleteEvent(event.id)}
-                  className="bg-red-500 text-white"
-                >
-                  Delete
-                </Button>
-              </div>
-            </li>
-          ))}
-        </ul>
+          <h3 className="text-lg font-semibold">
+            Events on {date?.toLocaleDateString()}
+          </h3>
+          <ul className="space-y-2">
+            {events.map((event) => (
+              <li
+                key={event.id}
+                className={`flex justify-between items-center p-3 ${
+                  event.category === "work"
+                    ? "bg-green-300"
+                    : event.category === "personal"
+                    ? "bg-blue-300"
+                    : "bg-yellow-300"
+                } p-2 rounded`}
+              >
+                <div>
+                  <p className="font-semibold text-black">{event.name}</p>
+                  <p className="text-sm text-gray-600">
+                    {event.startTime} - {event.endTime}
+                  </p>
+                </div>
+                <div className="space-x-2">
+                  <Button
+                    onClick={() => openEventForm(event)}
+                    className="text-white"
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => handleDeleteEvent(event.id)}
+                    className="bg-red-500 text-white"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <div className="flex justify-between mt-4">
+      <div className="flex flex-col gap-2">
         <Button
           onClick={() => handleExportEvents("json")}
           className="w-full bg-green-500 text-white"
