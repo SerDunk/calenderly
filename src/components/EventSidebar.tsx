@@ -1,103 +1,114 @@
-// src/components/EventSidebar.tsx
+"use client";
 
+import { FC } from "react";
 import { Button } from "./ui/button";
-import { Event } from "@/types/event"; // Import the Event type
+import { Event } from "@/types/event";
+import EventForm from "./Form";
 import { useState } from "react";
-import EventForm from "./Form"; // Import the EventForm component
 
-export default function EventSidebar({
+type EventSidebarProps = {
+  date: Date | undefined;
+  events: Event[];
+  handleAddEvent: (eventData: Event) => void;
+  handleDeleteEvent: (eventId: number) => void;
+  handleEditEvent: (updatedEvent: Event) => void;
+  handleExportEvents: (format: "json" | "csv") => void;
+};
+
+const EventSidebar: FC<EventSidebarProps> = ({
   date,
   events,
   handleAddEvent,
   handleDeleteEvent,
   handleEditEvent,
-}: {
-  date: Date | undefined;
-  events: Event[];
-  handleAddEvent: (eventData: Event) => void;
-  handleDeleteEvent: (eventId: number) => void;
-  handleEditEvent: (eventData: Event) => void;
-}) {
-  const [showModal, setShowModal] = useState(false);
+  handleExportEvents,
+}) => {
+  const [isEventFormOpen, setIsEventFormOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
 
-  const handleAddEventClick = () => {
-    setEditingEvent(null);
-    setShowModal(true);
+  const openEventForm = (event?: Event) => {
+    setEditingEvent(event || null);
+    setIsEventFormOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const closeEventForm = () => {
     setEditingEvent(null);
-    setShowModal(false);
-  };
-
-  const handleEditClick = (event: Event) => {
-    setEditingEvent(event);
-    setShowModal(true);
+    setIsEventFormOpen(false);
   };
 
   return (
-    <div className="flex flex-col">
-      <div>
-        <h1 className="text-xl font-bold">
-          {date ? date.toDateString() : "No date selected"}
-        </h1>
-      </div>
-      <div>
-        {events.length === 0 ? (
-          <p>No events</p>
-        ) : (
-          events.map((event) => (
-            <div key={event.id} className="p-2 border-b">
-              <h3 className="font-semibold">{event.name}</h3>
-              <p>
-                {event.startTime} - {event.endTime}
-              </p>
-              <p>{event.description}</p>
-              <div className="flex space-x-2">
+    <div className="space-y-4">
+      <h2 className="text-xl font-semibold">Event Management</h2>
+      <div className="space-y-2">
+        <Button onClick={() => openEventForm()} className="w-full">
+          Add Event
+        </Button>
+
+        <h3 className="text-lg font-semibold">
+          Events on {date?.toLocaleDateString()}
+        </h3>
+        <ul className="space-y-2">
+          {events.map((event) => (
+            <li
+              key={event.id}
+              className={`flex justify-between items-center ${
+                event.category === "work"
+                  ? "bg-green-100"
+                  : event.category === "personal"
+                  ? "bg-blue-100"
+                  : "bg-yellow-100"
+              } p-2 rounded`}
+            >
+              <div>
+                <p className="font-semibold">{event.name}</p>
+                <p className="text-sm text-gray-600">
+                  {event.startTime} - {event.endTime}
+                </p>
+              </div>
+              <div className="space-x-2">
                 <Button
-                  variant="outline"
+                  onClick={() => openEventForm(event)}
                   className="bg-blue-500 text-white"
-                  onClick={() => handleEditClick(event)}
                 >
                   Edit
                 </Button>
                 <Button
-                  variant="outline"
-                  className="bg-red-500 text-white"
                   onClick={() => handleDeleteEvent(event.id)}
+                  className="bg-red-500 text-white"
                 >
                   Delete
                 </Button>
               </div>
-            </div>
-          ))
-        )}
+            </li>
+          ))}
+        </ul>
       </div>
-      <div>
+
+      <div className="flex justify-between mt-4">
         <Button
-          variant="outline"
-          className="rounded"
-          onClick={handleAddEventClick}
+          onClick={() => handleExportEvents("json")}
+          className="w-full bg-green-500 text-white"
         >
-          Add Event
+          Export as JSON
+        </Button>
+        <Button
+          onClick={() => handleExportEvents("csv")}
+          className="w-full bg-yellow-500 text-white"
+        >
+          Export as CSV
         </Button>
       </div>
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 ">
-          <div className="bg-white p-6 rounded-xl shadow-lg w-96">
-            <h2 className="text-xl font-bold mb-4">
-              {editingEvent ? "Edit Event" : "Add Event"}
-            </h2>
-            <EventForm
-              onClose={handleCloseModal}
-              onSubmit={handleAddEvent}
-              editingEvent={editingEvent}
-              handleEdit={handleEditEvent}
-            />
-          </div>
-        </div>
+
+      {isEventFormOpen && (
+        <EventForm
+          onClose={closeEventForm}
+          onSubmit={handleAddEvent}
+          editingEvent={editingEvent}
+          handleEdit={handleEditEvent}
+        />
       )}
     </div>
   );
-}
+};
+
+export default EventSidebar;

@@ -4,79 +4,53 @@ import { useState, useEffect } from "react";
 import Container from "@/components/Container";
 import EventSidebar from "@/components/EventSidebar";
 import { Calendar } from "@/components/ui/calendar";
-import { Event } from "@/types/event"; // Import the Event type
+import { Event } from "@/types/event";
+import {
+  loadEvents,
+  addEvent,
+  deleteEvent,
+  editEvent,
+  exportEvents,
+} from "@/utils/actions";
 
 export default function Dashboard() {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date>(new Date());
   const [events, setEvents] = useState<Event[]>([]);
 
-  // Helper function to format the date as YYYY-MM-DD
-  const formatDate = (date: Date) => {
-    return date.toISOString().split("T")[0]; // "YYYY-MM-DD"
-  };
-
-  // Load events from localStorage whenever the selected date changes
   useEffect(() => {
     if (date) {
-      const storedEvents = localStorage.getItem(`events-${formatDate(date)}`);
-      if (storedEvents) {
-        setEvents(JSON.parse(storedEvents));
-      } else {
-        setEvents([]); // No events for this date
-      }
+      setEvents(loadEvents(date));
     }
   }, [date]);
 
-  // Save events to localStorage whenever the events state changes
-  useEffect(() => {
-    if (date) {
-      localStorage.setItem(
-        `events-${formatDate(date)}`,
-        JSON.stringify(events)
-      );
-    }
-  }, [date, events]);
-
   const handleAddEvent = (eventData: Event) => {
-    setEvents((prevEvents) => {
-      const updatedEvents = [...prevEvents, eventData];
-      // Save the updated events to localStorage for the selected date
-      if (date) {
-        localStorage.setItem(
-          `events-${formatDate(date)}`,
-          JSON.stringify(updatedEvents)
-        );
-      }
-      return updatedEvents;
-    });
+    setEvents((prevEvents) => addEvent(date, prevEvents, eventData));
   };
 
   const handleDeleteEvent = (eventId: number) => {
-    setEvents((prevEvents) => {
-      const updatedEvents = prevEvents.filter((event) => event.id !== eventId);
-      if (date) {
-        localStorage.setItem(
-          `events-${formatDate(date)}`,
-          JSON.stringify(updatedEvents)
-        );
-      }
-      return updatedEvents;
-    });
+    setEvents((prevEvents) => deleteEvent(date, prevEvents, eventId));
   };
 
   const handleEditEvent = (updatedEvent: Event) => {
-    setEvents((prevEvents) => {
-      const updatedEvents = prevEvents.map((event) =>
-        event.id === updatedEvent.id ? updatedEvent : event
-      );
-      if (date) {
-        localStorage.setItem(
-          `events-${formatDate(date)}`,
-          JSON.stringify(updatedEvents)
-        );
-      }
-      return updatedEvents;
+    setEvents((prevEvents) => editEvent(date, prevEvents, updatedEvent));
+  };
+
+  const handleExportEvents = (format: "json" | "csv") => {
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const data = exportEvents(month, year, events, format);
+
+    const blob = new Blob([data], {
+      type: format === "json" ? "application/json" : "text/csv",
     });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `events_${year}-${month + 1}.${format}`;
+    link.click();
+
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -89,13 +63,14 @@ export default function Dashboard() {
             handleAddEvent={handleAddEvent}
             handleDeleteEvent={handleDeleteEvent}
             handleEditEvent={handleEditEvent}
+            handleExportEvents={handleExportEvents}
           />
         </div>
         <div className="flex-1 flex justify-center items-center">
           <Calendar
             mode="single"
             selected={date}
-            onSelect={setDate}
+            onDayClick={(day: Date) => setDate(day)} // Assuming onDayClick for ShadCN
             className="rounded-md border transform scale-150"
           />
         </div>
